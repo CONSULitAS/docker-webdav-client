@@ -1,4 +1,4 @@
-FROM alpine:3.16
+FROM alpine:latest
 
 # Specify URL, username and password to communicate with the remote webdav
 # resource. When using _FILE, the password will be read from that file itself,
@@ -8,8 +8,9 @@ ENV WEBDRIVE_USERNAME=
 ENV WEBDRIVE_PASSWORD=
 ENV WEBDRIVE_PASSWORD_FILE=
 
-# User ID of share owner
+# User ID of share owner / group
 ENV OWNER=0
+ENV GROUP=users
 
 # Location of directory where to mount the drive into the container.
 ENV WEBDRIVE_MOUNT=/mnt/webdrive
@@ -32,4 +33,4 @@ VOLUME [ "/mnt/webdrive" ]
 # Listing the files will keep the share active and avoid that the remote server
 # closes the connection.
 ENTRYPOINT [ "tini", "-g", "--", "/usr/local/bin/docker-entrypoint.sh" ]
-CMD [ "ls.sh" ]
+CMD [ "empty.sh" ]
