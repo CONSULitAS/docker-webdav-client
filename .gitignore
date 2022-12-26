@@ -1,0 +1,6 @@
+.docker-compose.yml.swp
+
+# environment variables
+.env
+
+# ***** EOF *****
