@@ -54,11 +54,17 @@ jobs:
           IMAGE_NEEDS_UPDATE: ${{ steps.baseupdatecheck.outputs.needs-updating }}
           GIT_EVENT_NAME: ${{ github.event_name }}
         run: |
-          if (( $IMAGE_NEEDS_UPDATE == "true" || $GIT_EVENT_NAME == "push" || $GIT_EVENT_NAME == "pull_request" )); then
-            echo "::set-output name=run_jobs::true"
+          if [ "$IMAGE_NEEDS_UPDATE" = "true" ] || [ "$GIT_EVENT_NAME" = "push" ] || [ "$GIT_EVENT_NAME" = "pull_request" ]; then
+            echo "run_jobs=true" >> "$GITHUB_OUTPUT"
+            echo "### We need to build a new docker image! :rocket:" >> "$GITHUB_STEP_SUMMARY"
           else
-            echo "::set-output name=run_jobs::false"
+            echo "run_jobs=false" >> "$GITHUB_OUTPUT"
+            echo "### Everything is already up-to-date!" >> "$GITHUB_STEP_SUMMARY"
           fi
+          { 
+            echo "IMAGE_NEEDS_UPDATE:='$IMAGE_NEEDS_UPDATE'"
+            echo "GIT_EVENT_NAME:='$GIT_EVENT_NAME'"
+          } >> "$GITHUB_STEP_SUMMARY"
 
   build-and-push-image:
     runs-on: ubuntu-latest
