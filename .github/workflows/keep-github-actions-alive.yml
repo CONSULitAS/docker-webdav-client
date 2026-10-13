@@ -1,5 +1,8 @@
 ---
 name: Keep workflows alive
+permissions:
+  pull-requests: write
+  contents: read
 
 # yamllint disable-line rule:truthy
 on:
@@ -12,6 +15,6 @@ jobs:
     name: Cronjob based GitHub action
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Keep your GitHub Actions alive automatically
         uses: Entepotenz/keep-github-actions-alive-min-dependencies@v1
